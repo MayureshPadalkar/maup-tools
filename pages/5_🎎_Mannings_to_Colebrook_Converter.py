@@ -1,6 +1,6 @@
 import streamlit as st
 
-st.logo("images/logo.png", icon_image="images/logo.png")
+#st.logo("images/logo.png", icon_image="images/logo.png")
 
 st.sidebar.title("Contact")
 st.sidebar.info(
