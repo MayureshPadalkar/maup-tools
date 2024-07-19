@@ -1,10 +1,10 @@
 import streamlit as st
 
-st.logo("images/logo.png", icon_image="images/logo.png")
 st.set_page_config(
 	page_title="Streamlit Multipage App"
 )
 
+#st.logo("images/logo.png", icon_image="images/logo.png")
 st.title("Modelling checks and Geospatial applications for Flood Modellers")
 
 st.markdown(
