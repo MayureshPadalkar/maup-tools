@@ -4,9 +4,8 @@ st.set_page_config(
 	page_title="Streamlit Multipage App"
 )
 
-st.title("Modelling checks and Geospatial applications for Flood Modellers")
 st.logo("images/logo.png", icon_image="images/logo.png")
-# st.sidebar.success("Select a page above.")
+st.title("Modelling checks and Geospatial applications for Flood Modellers")
 
 st.markdown(
     """
