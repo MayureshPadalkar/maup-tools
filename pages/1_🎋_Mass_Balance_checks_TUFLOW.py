@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
-st.logo("images/logo.png", icon_image="images/logo.png")
+#st.logo("images/logo.png", icon_image="images/logo.png")
 
 st.sidebar.title("Contact")
 st.sidebar.info(
