@@ -5,7 +5,7 @@ st.set_page_config(
 )
 
 st.title("Modelling checks and Geospatial applications for Flood Modellers")
-st.logo("images/logo.png", icon_image="images/logo1.png")
+st.logo("images/logo.png")#, icon_image="images/logo1.png")
 # st.sidebar.success("Select a page above.")
 
 st.markdown(
