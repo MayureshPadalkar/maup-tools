@@ -14,7 +14,7 @@ st.markdown(
         - Courant numbers checks from HPC TUFLOW output  
         - Histogram for plotting stage difference rasters  
         - Rating curve calculator for a circular pipe  
-        - Manning's to Colebrook-White roughness converter
+        - Roughness converter: Manning's to Colebrook-White roughness and vice-versa
 
     """
 )
