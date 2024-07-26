@@ -16,6 +16,7 @@ st.markdown(
         - Rating curve calculator for a circular pipe  
         - Roughness converter: Manning's to Colebrook-White roughness and vice-versa  
 	- Calculate volume of a depth raster  
+ 	- Visualise InfoWorks ICM vectors in GIS
 
     """
 )
@@ -28,7 +29,7 @@ st.image("images/developedby.gif")
 st.subheader("Acknowledgements")
 st.markdown(
     """
-    To my family, colleagues, and alma mater.
+    To my family, current and past colleagues, and alma mater.
 
     """
 )
