@@ -25,7 +25,7 @@ st.title("Log File Checks from InfoWorks ICM")
 
 st.markdown("""
     Upload your InfoWorks ICM log file, and check the important parameters as part of your checks.  
-    SIM ID can be checked by right clicking the 'Model Group' and checking 'ID' attribute beside to the run.  
+    SIM ID can be identified by right-clicking the run 'Model Group', clicking 'Open results manager', and checking 'ID' attribute beside the run.  
         
     """)
     
