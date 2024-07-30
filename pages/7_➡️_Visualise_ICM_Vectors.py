@@ -26,7 +26,7 @@ st.sidebar.info(
 st.title("Visualise ICM Vectors in GIS")
 
 st.markdown("""
-    This tool converts InfoWorks ICM "2D Zones.shp" polygons to points, to visualise the output in GIS.  
+    This tool converts InfoWorks ICM "2D Zones.shp" polygons to points, to visualise the output in any GIS software.  
     Please remove the double quotations if you're copying and pasting the shapefile as 'Copy as path'.  
     Optionally, there is a provision to download the QML file after the processing is complete to style the points shapefile in QGIS.  
         
