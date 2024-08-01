@@ -29,7 +29,8 @@ st.title("Rating Curve Calculator for Circular Pipes")
 
 st.write("""
     Generates a rating (H-Q) curve for a circular pipe after you mention a diameter, slope, roughness, and invert level.  
-    The output can be used as a 1d_bc boundary condition for the downstream node of your last pipe leaving the system in 1D ESTRY (TUFLOW).
+    The output can be used as a 1d_bc boundary condition for the downstream node of your last pipe leaving the system in 1D ESTRY (TUFLOW).  
+    The tool has the facility to save this rating curve to the folder location of your interest as a CSV; scroll down after you've generated the rating curve.  
     """)
 
 def partial_flow_area(diameter, depth):
