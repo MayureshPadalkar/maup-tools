@@ -86,7 +86,7 @@ def extract_log_info(file_content):
                 network_scenario = match.group(1)
 
         if "Inflow:" in line:
-            match = re.search(r'Inflow:\s*.*>\s*(\d+(\.\d+)?\s*yr|\d+(\.\d+)?%|\d+(\.\d+)?\s*%)', line)
+            match = re.search(r'Inflow:\s*.*>\s*([\w\s%]+)', line)
             if match:
                 inflow = match.group(1)
                 
