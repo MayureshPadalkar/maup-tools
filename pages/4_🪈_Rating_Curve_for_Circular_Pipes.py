@@ -87,9 +87,9 @@ if 'plot' not in st.session_state:
     st.session_state.plot = None
     
 # Input parameters
-diameter = st.number_input("Diameter (m):", min_value=0.0, value=1.0, format="%.1f")
+diameter = st.number_input("Diameter (m):", min_value=0.0, value=1.0, step=0.1, format="%.1f")
 slope = st.number_input("Slope (m/m):", value=0.01, format="%.4f")
-manning_n = st.number_input("Manning's roughness coefficient (n):", min_value=0.009, value=0.013, format="%.3f")
+manning_n = st.number_input("Manning's roughness coefficient (n):", min_value=0.009, step=0.001, value=0.013, format="%.3f")
 invert_level = st.number_input("Invert Level (mOD):", format="%.3f")
 
 # Button to generate and plot rating curve
