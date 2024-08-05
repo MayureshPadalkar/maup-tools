@@ -32,11 +32,21 @@ st.markdown("""
     """)
     
 # Function to list directories in a given path
+# def list_dirs(path):
+#     try:
+#         return [f for f in os.listdir(path) if os.path.isdir(os.path.join(path, f))]
+#     except Exception as e:
+#         st.warning(f"Please enter a valid input folder path.")
+#         return []
+
 def list_dirs(path):
     try:
-        return [f for f in os.listdir(path) if os.path.isdir(os.path.join(path, f))]
+        if os.path.exists(path):
+            return [f for f in os.listdir(path) if os.path.isdir(os.path.join(path, f))]
+        else:
+            return []
     except Exception as e:
-        st.warning(f"Please enter a valid input folder path.")
+        st.error(f"Error accessing path: {e}")
         return []
 
 # Function to rasterize shapefiles to GeoTIFF, using folder names for output filenames
