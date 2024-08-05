@@ -17,7 +17,8 @@ st.markdown(
         - Roughness converter: Manning's to Colebrook-White roughness and vice-versa  
 	- Calculate volume of a depth raster  
  	- Visualise InfoWorks ICM vectors in any GIS software  
-  	- Check log file parameters from InfoWorks ICM
+  	- Check log file parameters from InfoWorks ICM  
+   	- Convert InfoWorks ICM 2D Zones.shp to depth and/or stage rasters
 
     """
 )
