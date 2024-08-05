@@ -80,7 +80,7 @@ def rasterize_shapefiles(input_folder, output_folder, raster_types, cell_size):
 # Main input folder selection
 root_input_folder = st.text_input('Root folder for input selection:', value='C:/')
 if root_input_folder:
-    st.write(f"Root input folder: {root_input_folder}")
+    #st.write(f"Root input folder: {root_input_folder}")
     input_subdirs = list_dirs(root_input_folder)
     if input_subdirs:
         selected_input_subdir = st.selectbox('Select input folder:', input_subdirs)
@@ -94,7 +94,7 @@ else:
 # Output folder selection
 root_output_folder = st.text_input('Enter the output folder:', value='C:/mention/the/output/folder')
 if root_output_folder:
-    st.write(f"Root output folder: {root_output_folder}")
+    #st.write(f"Root output folder: {root_output_folder}")
     final_output_folder = os.path.abspath(root_output_folder)
 else:
     final_output_folder = None
