@@ -78,22 +78,34 @@ def rasterize_shapefiles(input_folder, output_folder, raster_types, cell_size):
     st.success('2D Zones.shp are converted to rasters successfully.')
 
 # Main input folder selection
-root_input_folder = st.text_input('Enter the input folder:', value='C:/')
-input_subdirs = list_dirs(root_input_folder)
-selected_input_subdir = st.selectbox('Select input folder:', input_subdirs)
-
-if selected_input_subdir:
-    main_input_folder = os.path.join(root_input_folder, selected_input_subdir)
+root_input_folder = st.text_input('Root folder for input selection:', value='C:/')
+if root_input_folder:
+    st.write(f"Root input folder: {root_input_folder}")
+    input_subdirs = list_dirs(root_input_folder)
+    if input_subdirs:
+        selected_input_subdir = st.selectbox('Select input folder:', input_subdirs)
+    else:
+        selected_input_subdir = None
+        st.warning("No subdirectories found in the specified input folder.")
 else:
-    main_input_folder = None
+    selected_input_subdir = None
+    st.warning("Please enter a valid input folder path.")
 
 # Output folder selection
 root_output_folder = st.text_input('Enter the output folder:', value='C:/mention/the/output/folder')
 if root_output_folder:
+    st.write(f"Root output folder: {root_output_folder}")
     final_output_folder = os.path.abspath(root_output_folder)
 else:
     final_output_folder = None
     st.warning("Please enter a valid output folder path.")
+
+# Complete paths
+if selected_input_subdir:
+    main_input_folder = os.path.join(root_input_folder, selected_input_subdir)
+    st.write(f"Main input folder: {main_input_folder}")
+else:
+    main_input_folder = None
 
 # Raster type selection
 raster_type = st.selectbox('Select the hydraulic parameter that you want to process:', ['DEPTH2D', 'elevation2', 'Both'], index=2)
@@ -103,13 +115,9 @@ cell_size = st.number_input('Enter cell size:', min_value=0.5, value=2.0, step=0
 
 # Process button
 if st.button('Process Shapefile'):
-    if not selected_input_subdir or not root_output_folder:
+    if not main_input_folder or not final_output_folder:
         st.error('Please select both input and output folders.')
     else:
-        # Convert paths to absolute paths
-        main_input_folder = os.path.abspath(main_input_folder)
-        final_output_folder = os.path.abspath(final_output_folder)
-        
         # Create output folder if it doesn't exist
         os.makedirs(final_output_folder, exist_ok=True)
         
@@ -120,4 +128,7 @@ if st.button('Process Shapefile'):
             rasterize_types = [raster_type]
         
         # Call the rasterize function
-        rasterize_shapefiles(main_input_folder, final_output_folder, rasterize_types, cell_size)
+        try:
+            rasterize_shapefiles(main_input_folder, final_output_folder, rasterize_types, cell_size)
+        except Exception as e:
+            st.error(f"Error during rasterization: {e}")
