@@ -72,7 +72,10 @@ root_input_folder = st.text_input('Enter the input folder:', value='C:/')
 input_subdirs = list_dirs(root_input_folder)
 selected_input_subdir = st.selectbox('Select input folder:', input_subdirs)
 
-
+if selected_input_subdir:
+    main_input_folder = os.path.join(root_input_folder, selected_input_subdir)
+else:
+    main_input_folder = None
 
 # Output folder selection
 root_output_folder = st.text_input('Enter the output folder:', value='C:/mention/the/output/folder')
@@ -81,11 +84,6 @@ if root_output_folder:
 else:
     final_output_folder = None
     st.warning("Please enter a valid output folder path.")
-
-if selected_input_subdir:
-    main_input_folder = os.path.join(root_input_folder, selected_input_subdir)
-else:
-    main_input_folder = None
 
 # Raster type selection
 raster_type = st.selectbox('Select the hydraulic parameter that you want to process:', ['DEPTH2D', 'elevation2', 'Both'], index=2)
