@@ -1,6 +1,8 @@
 import streamlit as st
 import os
 import subprocess
+import tkinter as tk
+from tkinter import filedialog
 
 #st.logo("images/logo.png", icon_image="images/logo.png")
 
@@ -31,81 +33,58 @@ st.markdown("""
         
     """)
     
-# Function to list directories in a given path
-# def list_dirs(path):
-#     try:
-#         return [f for f in os.listdir(path) if os.path.isdir(os.path.join(path, f))]
-#     except Exception as e:
-#         st.warning(f"Please enter a valid input folder path.")
-#         return []
-
-def list_dirs(path):
-    try:
-        if os.path.exists(path):
-            return [f for f in os.listdir(path) if os.path.isdir(os.path.join(path, f))]
-        else:
-            return []
-    except Exception as e:
-        st.error(f"Error accessing path: {e}")
-        return []
-
 # Function to rasterize shapefiles to GeoTIFF, using folder names for output filenames
-def rasterize_shapefiles(input_folder, output_folder, raster_types, cell_size):
-    for root, dirs, files in os.walk(input_folder):
-        for file in files:
-            if file == '2D Zones.shp':
-                shapefile_path = os.path.join(root, file)
-                folder_name = os.path.basename(root)
-                for raster_type in raster_types:
-                    if raster_type == 'DEPTH2D':
-                        output_filename = f"{folder_name}_d_Max.tif"
-                    else:
-                        output_filename = f"{folder_name}_h_Max.tif"
-                    output_tiff_path = os.path.join(output_folder, output_filename)
-                    command = [
-                        "gdal_rasterize",
-                        "-a",
-                        raster_type,
-                        "-tr",
-                        str(cell_size),
-                        str(cell_size),
-                        "-a_nodata",
-                        "-9999",
-                        shapefile_path,
-                        output_tiff_path
-                    ]
-                    subprocess.run(command, check=True)
+def rasterize_shapefiles(input_folders, output_folder, raster_types, cell_size):
+    for folder in input_folders:
+        for root, dirs, files in os.walk(folder):
+            for file in files:
+                if file == '2D Zones.shp':
+                    shapefile_path = os.path.join(root, file)
+                    folder_name = os.path.basename(root)
+                    for raster_type in raster_types:
+                        if raster_type == 'DEPTH2D':
+                            output_filename = f"{folder_name}_d_Max.tif"
+                        else:
+                            output_filename = f"{folder_name}_h_Max.tif"
+                        output_tiff_path = os.path.join(output_folder, output_filename)
+                        command = [
+                            "gdal_rasterize",
+                            "-a",
+                            raster_type,
+                            "-tr",
+                            str(cell_size),
+                            str(cell_size),
+                            "-a_nodata",
+                            "-9999",
+                            shapefile_path,
+                            output_tiff_path
+                        ]
+                        subprocess.run(command, check=True)
     st.success('2D Zones.shp are converted to rasters successfully.')
 
-# Main input folder selection
-root_input_folder = st.text_input('Root folder for input selection:', value='C:/')
-if root_input_folder:
-    #st.write(f"Root input folder: {root_input_folder}")
-    input_subdirs = list_dirs(root_input_folder)
-    if input_subdirs:
-        selected_input_subdir = st.selectbox('Select input folder:', input_subdirs)
-    else:
-        selected_input_subdir = None
-        st.warning("No subdirectories found in the specified input folder.")
-else:
-    selected_input_subdir = None
-    st.warning("Please enter a valid input folder path.")
+# Allow user to input the root directory
+root_dir = st.text_input("Enter the root directory containing your input folders:")
 
-# Output folder selection
-root_output_folder = st.text_input('Enter the output folder:', value='C:/mention/the/output/folder')
-if root_output_folder:
-    #st.write(f"Root output folder: {root_output_folder}")
-    final_output_folder = os.path.abspath(root_output_folder)
+input_folders = []
+if root_dir and os.path.isdir(root_dir):
+    # Get list of folders in the root directory
+    folder_list = [f for f in os.listdir(root_dir) if os.path.isdir(os.path.join(root_dir, f))]
+    
+    # Allow users to select multiple input folders
+    selected_folders = st.multiselect("Select input folders", folder_list)
+    
+    # Convert selected folder names to full paths
+    input_folders = [os.path.join(root_dir, folder) for folder in selected_folders]
 else:
-    final_output_folder = None
+    st.warning("Please enter a valid root directory path.")
+
+# Output folder selection using text input
+output_folder = st.text_input('Enter the output folder:')
+if output_folder:
+    if not os.path.isdir(output_folder):
+        st.warning(f"Please enter a valid output folder path.")
+else:
     st.warning("Please enter a valid output folder path.")
-
-# Complete paths
-if selected_input_subdir:
-    main_input_folder = os.path.join(root_input_folder, selected_input_subdir)
-    st.write(f"Main input folder: {main_input_folder}")
-else:
-    main_input_folder = None
 
 # Raster type selection
 raster_type = st.selectbox('Select the hydraulic parameter that you want to process:', ['DEPTH2D', 'elevation2', 'Both'], index=2)
@@ -115,20 +94,15 @@ cell_size = st.number_input('Enter cell size:', min_value=0.5, value=2.0, step=0
 
 # Process button
 if st.button('Process Shapefile'):
-    if not main_input_folder or not final_output_folder:
+    if not input_folders or not output_folder:
         st.error('Please select both input and output folders.')
     else:
-        # Create output folder if it doesn't exist
-        os.makedirs(final_output_folder, exist_ok=True)
-        
-        # Determine rasterize types based on user selection
+        os.makedirs(output_folder, exist_ok=True)
         if raster_type == 'Both':
             rasterize_types = ['DEPTH2D', 'elevation2']
         else:
             rasterize_types = [raster_type]
-        
-        # Call the rasterize function
         try:
-            rasterize_shapefiles(main_input_folder, final_output_folder, rasterize_types, cell_size)
+            rasterize_shapefiles(input_folders, output_folder, rasterize_types, cell_size)
         except Exception as e:
             st.error(f"Error during rasterization: {e}")
