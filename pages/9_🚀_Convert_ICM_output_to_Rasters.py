@@ -61,7 +61,7 @@ def rasterize_shapefiles(input_folders, output_folder, raster_types, cell_size):
     st.success('2D Zones.shp are converted to rasters successfully.')
 
 # Allow user to input the root directory
-root_dir = st.text_area("Enter the root directory containing your input folders:")
+root_dir = st.text_input("Enter the root directory containing your input folders:")
 
 input_folders = []
 if root_dir and os.path.isdir(root_dir):
