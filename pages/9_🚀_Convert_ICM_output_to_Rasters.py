@@ -1,8 +1,6 @@
 import streamlit as st
 import os
 import subprocess
-import tkinter as tk
-from tkinter import filedialog
 
 #st.logo("images/logo.png", icon_image="images/logo.png")
 
