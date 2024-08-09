@@ -47,6 +47,7 @@ def extract_log_info(file_content):
     max_element_area = None
     boundary_condition = None
     twod_zone_mass_error = None
+    timestep_value = None
     
     min_element_area_count = 0
 
@@ -138,6 +139,11 @@ def extract_log_info(file_content):
             if match:
                 twod_zone_mass_error = match.group(1)
 
+        if "Timestep:" in line:
+            match = re.search(r'Timestep:\s*([\d\.]+min)', line)
+            if match:
+                timestep_value = match.group(1)  # Update timestep_value with the latest match
+
     return {
         "InfoWorks ICM version": innovyze_version,
         "Network": network,
@@ -154,7 +160,8 @@ def extract_log_info(file_content):
         "VBEP": volume_balance_error,
         "2D Zone Mass Error (m3)": twod_zone_mass_error,
         "Elapsed clock time": elapsed_clock_time,
-        "GPU used": "Yes" if gpu_used else "No"  
+        "GPU used": "Yes" if gpu_used else "No",
+        "Finish time": timestep_value
     }
 
 uploaded_file = st.file_uploader("Upload a SIM.log file:", type="log")
@@ -176,6 +183,7 @@ if uploaded_file is not None:
         st.write(f"Scenario: {log_info.get('Scenario', 'Not found')}")
         st.write(f"GPU used: {log_info.get('GPU used', 'Not found')}")
         st.write(f"Elapsed clock time: {log_info.get('Elapsed clock time', 'Not found')}")
+        st.write(f"Finish time: {log_info.get('Finish time', 'Not found')}")
     
         st.subheader("2D Zone Summary:")
         st.write(f"Minimum Element Area: {log_info.get('Minimum Element Area (m2)', 'Not found')}")
