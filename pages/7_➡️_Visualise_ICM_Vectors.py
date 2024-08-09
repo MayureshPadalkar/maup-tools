@@ -56,36 +56,23 @@ uploaded_file = st.file_uploader("Upload a Shapefile (.shp):", type="shp")
 # Get output path from user
 output_path = st.text_input("Enter the output path including filename and .shp extension:")
 
-if st.button("Process Shapefile"):
-    if not uploaded_file or uploaded_file == "mention/the/path.shp":
-        st.warning("Please upload a shapefile.")
-    else:
-        try:
-            if not os.path.exists(uploaded_file):
-                raise FileNotFoundError(f"The file {uploaded_file} does not exist.")
-            
-            if not output_path:
-                raise ValueError("Please specify an output path.")
+if uploaded_file is not None:
+    try:
+        # Save the uploaded file to a temporary location
+        with NamedTemporaryFile(delete=False, suffix=".shp") as temp_file:
+            temp_file.write(uploaded_file.getbuffer())
+            temp_file_path = temp_file.name
 
-            process_shapefile(uploaded_file, output_path)
-            st.success(f"Processed shapefile is saved.")
-            
-            # Add download button for QML file
-            qml_path = "themes/Point_Vectors.qml"
-            if os.path.exists(qml_path):
-                with open(qml_path, "rb") as file:
-                    btn = st.download_button(
-                        label="Download QML File",
-                        data=file,
-                        file_name="Point_Vectors.qml",
-                        mime="application/octet-stream"
-                    )
-            else:
-                st.warning("QML file not found. Unable to provide download option.")
-            
-        except FileNotFoundError as e:
-            st.error(f"Error: {str(e)}")
-        except ValueError as e:
-            st.error(f"Error: {str(e)}")
-        except Exception as e:
-            st.error(f"An unexpected error occurred: {str(e)}")
+        # Process the shapefile
+        process_shapefile(temp_file_path, output_path)
+        
+        st.success(f"Processed shapefile is saved as {output_path}.")
+    
+    except FileNotFoundError as e:
+        st.error(f"Error: {str(e)}")
+    except ValueError as e:
+        st.error(f"Error: {str(e)}")
+    except Exception as e:
+        st.error(f"An unexpected error occurred: {str(e)}")
+else:
+    st.warning("Please upload a shapefile to process.")
