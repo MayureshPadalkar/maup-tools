@@ -51,11 +51,10 @@ def process_shapefile(file_path, output_path):
     ddf_points.compute().to_file(output_path)
 
 # Provide an option to select a pre-uploaded file
-uploaded_file = st.text_input("Upload a Shapefile:", value="mention/the/path.shp")
+uploaded_file = st.file_uploader("Upload a Shapefile (.shp):", type="shp")
 
 # Get output path from user
 output_path = st.text_input("Enter the output path including filename and .shp extension:")
-
 
 if st.button("Process Shapefile"):
     if not uploaded_file or uploaded_file == "mention/the/path.shp":
